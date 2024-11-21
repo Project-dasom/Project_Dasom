@@ -133,14 +133,17 @@ function UserPageInfo(props) {
                                         overflow: 'hidden', 
                                         textOverflow: 'ellipsis', 
                                         whiteSpace: 'nowrap', 
-                                        width: '10%' /* ID 열 너비 설정 */
+                                        width: '10%'
                                     }} title={info.userId}>
                                         <a 
                                             style={{
                                                 textDecoration: 'underline', 
                                                 cursor: 'pointer',
-                                                display: 'block', /* a 태그를 block으로 변경 */
-                                                width: '100%' /* 부모 셀의 너비를 100% 차지 */
+                                                display: 'inline-block',
+                                                width: '50px',
+                                                whiteSpace: 'nowrap', 
+                                                overflow: 'hidden', 
+                                                textOverflow: 'ellipsis', 
                                             }}
                                             onClick={() => handleUserInfo(info)}
                                         >
