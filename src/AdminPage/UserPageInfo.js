@@ -54,25 +54,34 @@ function UserPageInfo(props) {
         const newSortOrder = (sortKey === key && sortOrder === 'asc') ? 'desc' : 'asc';  // 동일한 컬럼 클릭 시 내림차순으로 변경
         setSortKey(key);
         setSortOrder(newSortOrder);
-
+    
         const sortedData = [...tableInfo].sort((a, b) => {
-        // 날짜 값인 경우
-        if (key === 'created_at' || key === 'history') {
-            const dateA = new Date(a[key]);
-            const dateB = new Date(b[key]);
-
-            // 날짜 비교
-            if (dateA < dateB) return newSortOrder === 'asc' ? -1 : 1;
-            if (dateA > dateB) return newSortOrder === 'asc' ? 1 : -1;
+            // 날짜 값인 경우
+            if (key === 'created_at' || key === 'history') {
+                const dateA = new Date(a[key]);
+                const dateB = new Date(b[key]);
+    
+                // 날짜 비교
+                if (dateA < dateB) return newSortOrder === 'asc' ? -1 : 1;
+                if (dateA > dateB) return newSortOrder === 'asc' ? 1 : -1;
+                return 0;
+            }
+    
+            // 날짜가 아닌 다른 값에 대해서는 기본적인 비교 (숫자나 문자열)
+            if (typeof a[key] === 'string' && typeof b[key] === 'string') {
+                const strA = a[key].toLowerCase();  // 대소문자 구분 없이 비교
+                const strB = b[key].toLowerCase();  // 대소문자 구분 없이 비교
+                if (strA < strB) return newSortOrder === 'asc' ? -1 : 1;
+                if (strA > strB) return newSortOrder === 'asc' ? 1 : -1;
+                return 0;
+            }
+    
+            // 숫자나 다른 타입에 대해서 기본 비교
+            if (a[key] < b[key]) return newSortOrder === 'asc' ? -1 : 1;
+            if (a[key] > b[key]) return newSortOrder === 'asc' ? 1 : -1;
             return 0;
-        }
-
-        // 날짜가 아닌 다른 값에 대해서는 기본적인 비교 (숫자나 문자열)
-        if (a[key] < b[key]) return newSortOrder === 'asc' ? -1 : 1;
-        if (a[key] > b[key]) return newSortOrder === 'asc' ? 1 : -1;
-        return 0;
-    });
-
+        });
+    
         setTableInfo(sortedData);
     };
 
@@ -128,7 +137,10 @@ function UserPageInfo(props) {
                                     <CTableDataCell>{info.userName}</CTableDataCell>
                                     <CTableDataCell>
                                         <a 
-                                            style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                                            style={{ textDecoration: 'underline', cursor: 'pointer', maxWidth: '10%', 
+                                                overflow: 'hidden', 
+                                                textOverflow: 'ellipsis', 
+                                                whiteSpace: 'nowrap' }}
                                             onClick={() => handleUserInfo(info)}>
                                             {info.userId}
                                         </a>
