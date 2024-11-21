@@ -25,7 +25,7 @@ function UserPageInfo(props) {
 
     useEffect(() => {
         if (isLoggedIn) {
-            api.get(`/signUp/checkId/${userId}`)
+            api.get(`/admin_page/${userId}`)
                 .then(res => {
                     if(res.data.success) {
                         console.log(res.data.result);
