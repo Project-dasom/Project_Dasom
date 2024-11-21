@@ -99,17 +99,17 @@ function UserPageInfo(props) {
             <div className="my-page-info" style={{ height: '70vh' }}>
                 <p className="sub-title" style={{textAlign: 'left'}}>회원 정보</p>
                 { (visible === false && isLoggedIn && userId === 'admin') &&
-                    <CTable style={{ width: '100%' }}>
+                    <CTable style={{ width: '100%', tableLayout: 'fixed' }}>
                         <CTableHead>
                             <CTableRow color="light">
                                 <CTableHeaderCell scope="col" style={{ width: '8%' }} onClick={() => sortData('id')}>구분</CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '12%' }} onClick={() => sortData('userName')}>이름<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ 
                                     cursor: 'pointer', 
-                                    maxWidth: '10%', 
-                                    overflow: 'hidden', 
-                                    textOverflow: 'ellipsis', 
-                                    whiteSpace: 'nowrap' 
+                                    maxWidth: '10% !important', 
+                                    overflow: 'hidden !important', 
+                                    textOverflow: 'ellipsis !important', 
+                                    whiteSpace: 'nowrap !important' 
                                 }}  onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '18%' }} onClick={() => sortData('created_at')}>가입일자<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '25%' }} onClick={() => sortData('userPhone')}>전화번호<FaSort/></CTableHeaderCell>
