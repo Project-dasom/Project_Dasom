@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CButton, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react';
+
 import api from '../api/api';
 
 function LoginHistory(props) {

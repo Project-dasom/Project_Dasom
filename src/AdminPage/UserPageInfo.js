@@ -104,7 +104,13 @@ function UserPageInfo(props) {
                             <CTableRow color="light">
                                 <CTableHeaderCell scope="col" style={{ width: '8%' }} onClick={() => sortData('id')}>구분</CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '12%' }} onClick={() => sortData('userName')}>이름<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', maxWidth: '10%' }} onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ 
+                                    cursor: 'pointer', 
+                                    maxWidth: '10%', 
+                                    overflow: 'hidden', 
+                                    textOverflow: 'ellipsis', 
+                                    whiteSpace: 'nowrap' 
+                                }}  onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '18%' }} onClick={() => sortData('created_at')}>가입일자<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '25%' }} onClick={() => sortData('userPhone')}>전화번호<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '35%' }} onClick={() => sortData('history')}>마지막 로그인 시각<FaSort/></CTableHeaderCell>
