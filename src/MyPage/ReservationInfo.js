@@ -142,10 +142,19 @@ function ReservationInfo(props) {
                                 : filteredInfo.map((info, index) => (  
                                     <CTableRow key={index}>
                                         <CTableDataCell>{index + 1}</CTableDataCell>
-                                        <CTableDataCell>{new Date(info.reserveDate).toLocaleDateString('sv-SE')}</CTableDataCell>
+                                        {/* <CTableDataCell>{new Date(info.reserveDate).toLocaleDateString('sv-SE')}</CTableDataCell>
                                         <CTableDataCell>
                                             {new Date(info.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - {new Date(info.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </CTableDataCell> */}
+                                        <CTableDataCell>
+                                            {new Date(new Date(info.reserveDate).getTime() - 9 * 60 * 60 * 1000).toLocaleDateString('sv-SE')}
                                         </CTableDataCell>
+
+                                        <CTableDataCell>
+                                            {new Date(new Date(info.startTime).getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - 
+                                            {new Date(new Date(info.endTime).getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </CTableDataCell>
+
                                         <CTableDataCell>{info.sitNum}번</CTableDataCell>
                                         <CTableDataCell>{(info.sitNum >= 1 && info.sitNum <= 20) ? `1인실(Common)` : 
                                             (info.sitNum >= 21 && info.sitNum <= 31) ? `고정석` : 

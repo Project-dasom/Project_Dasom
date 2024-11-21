@@ -7,6 +7,7 @@
     "@coreui/coreui": "^5.1.1",
     "@coreui/icons-react": "^2.3.0",
     "@coreui/react": "^5.4.1",
+    "@coreui/react-chartjs": "^3.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
