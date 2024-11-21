@@ -116,7 +116,7 @@ function UserPageInfo(props) {
                                 <CTableHeaderCell scope="col" style={{ 
                                     cursor: 'pointer', 
                                     width: '10%',
-                                    overflow: 'hidden', 
+                                    overflowX: 'hidden', 
                                     textOverflow: 'ellipsis', 
                                     whiteSpace: 'nowrap' 
                                 }}  onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
@@ -137,7 +137,7 @@ function UserPageInfo(props) {
                                     <CTableDataCell>{info.userName}</CTableDataCell>
                                     <CTableDataCell title={info.userId} style={{ 
                                         width: '10%',
-                                        overflow: 'hidden', 
+                                        overflowX: 'hidden', 
                                         textOverflow: 'ellipsis', 
                                         whiteSpace: 'nowrap' 
                                     }}>
