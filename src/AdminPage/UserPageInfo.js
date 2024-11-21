@@ -135,7 +135,12 @@ function UserPageInfo(props) {
                                 <CTableRow key={index}>
                                     <CTableDataCell>{index + 1}</CTableDataCell>
                                     <CTableDataCell>{info.userName}</CTableDataCell>
-                                    <CTableDataCell title={info.userId}>
+                                    <CTableDataCell title={info.userId} style={{ 
+                                        width: '10%',
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis', 
+                                        whiteSpace: 'nowrap' 
+                                    }}>
                                         <a 
                                             style={{ textDecoration: 'underline', cursor: 'pointer', display: 'block', width: '10%' }}
                                             onClick={() => handleUserInfo(info)}>
