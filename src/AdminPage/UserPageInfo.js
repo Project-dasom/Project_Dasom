@@ -113,19 +113,13 @@ function UserPageInfo(props) {
                             <CTableRow color="light">
                                 <CTableHeaderCell scope="col" style={{ width: '8%' }} onClick={() => sortData('id')}>구분</CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '12%' }} onClick={() => sortData('userName')}>이름<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ 
-                                    cursor: 'pointer', 
-                                    width: '10%',
-                                    overflowX: 'hidden', 
-                                    textOverflow: 'ellipsis', 
-                                    whiteSpace: 'nowrap' 
-                                }}  onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '10%' }}  onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '18%' }} onClick={() => sortData('created_at')}>가입일자<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '25%' }} onClick={() => sortData('userPhone')}>전화번호<FaSort/></CTableHeaderCell>
                                 <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '35%' }} onClick={() => sortData('history')}>마지막 로그인 시각<FaSort/></CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
-
+                    
                         <CTableBody style={{ maxHeight: '60vh', overflowY: 'auto' }}>
                             {(Array.isArray(tableInfo) && tableInfo.length === 0) 
                             ? <CTableRow>
@@ -135,15 +129,21 @@ function UserPageInfo(props) {
                                 <CTableRow key={index}>
                                     <CTableDataCell>{index + 1}</CTableDataCell>
                                     <CTableDataCell>{info.userName}</CTableDataCell>
-                                    <CTableDataCell title={info.userId} style={{ 
-                                        width: '10%',
-                                        overflowX: 'hidden', 
+                                    <CTableDataCell style={{ 
+                                        overflow: 'hidden', 
                                         textOverflow: 'ellipsis', 
-                                        whiteSpace: 'nowrap' 
-                                    }}>
+                                        whiteSpace: 'nowrap', 
+                                        width: '10%' /* ID 열 너비 설정 */
+                                    }} title={info.userId}>
                                         <a 
-                                            style={{ textDecoration: 'underline', cursor: 'pointer', display: 'block', width: '10%' }}
-                                            onClick={() => handleUserInfo(info)}>
+                                            style={{
+                                                textDecoration: 'underline', 
+                                                cursor: 'pointer',
+                                                display: 'block', /* a 태그를 block으로 변경 */
+                                                width: '100%' /* 부모 셀의 너비를 100% 차지 */
+                                            }}
+                                            onClick={() => handleUserInfo(info)}
+                                        >
                                             {info.userId}
                                         </a>
                                     </CTableDataCell>
@@ -151,18 +151,18 @@ function UserPageInfo(props) {
                                     <CTableDataCell>
                                         {info.userPhone ? info.userPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : '-'}
                                     </CTableDataCell>
-                                    <CTableDataCell>{
-                                        info.history ? 
-                                        new Date(info.history).toLocaleDateString('sv-SE') + ' ' + 
-                                        new Date(info.history).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
-                                            .replace(/AM/, '오전').replace(/PM/, '오후') : 
-                                        '-'
-                                    }
+                                    <CTableDataCell>
+                                        {info.history ? 
+                                            new Date(info.history).toLocaleDateString('sv-SE') + ' ' + 
+                                            new Date(info.history).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+                                                .replace(/AM/, '오전').replace(/PM/, '오후') : 
+                                            '-'
+                                        }
                                     </CTableDataCell>
                                 </CTableRow>
                             ))}
                         </CTableBody>
-                    </CTable>
+                    </CTable>                
                 }
                 {   (visible === true && isLoggedIn && userId === 'admin' && Object.keys(userInfo).length > 0) &&
                     <CCard className="text-center p-3" style={{ height: '100%' }}>
