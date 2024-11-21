@@ -99,7 +99,7 @@ function UserPageInfo(props) {
             <div className="my-page-info" style={{ height: '70vh' }}>
                 <p className="sub-title" style={{textAlign: 'left'}}>회원 정보</p>
                 { (visible === false && isLoggedIn && userId === 'admin') &&
-                    <CTable style={{ width: '100%', tableLayout: 'fixed' }}>
+                    <CTable style={{ width: '100%' }}>
                         <CTableHead>
                             <CTableRow color="light">
                                 <CTableHeaderCell scope="col" style={{ width: '8%' }} onClick={() => sortData('id')}>구분</CTableHeaderCell>
