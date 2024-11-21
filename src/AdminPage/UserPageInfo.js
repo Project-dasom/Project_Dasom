@@ -137,7 +137,7 @@ function UserPageInfo(props) {
                                     <CTableDataCell>{info.userName}</CTableDataCell>
                                     <CTableDataCell title={info.userId}>
                                         <a 
-                                            style={{ textDecoration: 'underline', cursor: 'pointer', display: 'block', width: '100%' }}
+                                            style={{ textDecoration: 'underline', cursor: 'pointer', display: 'block', width: '10%' }}
                                             onClick={() => handleUserInfo(info)}>
                                             {info.userId}
                                         </a>
