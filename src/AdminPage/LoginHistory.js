@@ -22,7 +22,7 @@ function LoginHistory(props) {
                 console.log(e);
                 setTableInfo([]);
                 setLoading(false);
-                setError('데이터를 가져오는 데 문제가 발생했습니다.');
+                // setError('데이터를 가져오는 데 문제가 발생했습니다.');
             });
     };
 

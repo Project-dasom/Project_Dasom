@@ -142,7 +142,7 @@ function UserPageInfo(props) {
                                         textOverflow: 'ellipsis', 
                                         whiteSpace: 'nowrap' 
                                     }}>
-                                        <a 
+                                        <a
                                             style={{ textDecoration: 'underline', cursor: 'pointer' }}
                                             onClick={() => handleUserInfo(info)}>
                                             {info.userId}
