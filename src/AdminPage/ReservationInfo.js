@@ -4,6 +4,8 @@ import api from '../api/api';
 
 function ReservationInfo(props) {
     const userId = props.userId;
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [reserveInfo, setReserveInfo] = useState({
         userId: userId,
@@ -20,9 +22,12 @@ function ReservationInfo(props) {
             .then(res => {
                 setTableInfo(res.data);
                 console.log(res.data);
+                setLoading(false);
             }).catch(e => {
                 setTableInfo([]);
                 console.log(e);
+                setLoading(false);
+                setError('데이터를 가져오는 데 문제가 발생했습니다.');
             });
     };
 
@@ -41,6 +46,14 @@ function ReservationInfo(props) {
     useEffect(() => {
         getReservationInfo();
     }, [userId]);
+
+    if (loading) {
+        return <div>로딩 중...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <CTable>

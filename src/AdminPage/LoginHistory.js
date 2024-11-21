@@ -7,6 +7,8 @@ function LoginHistory(props) {
     const userId = props.userId;
 
     const [tableInfo, setTableInfo] = useState([]); 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const getLoginInfo = () => {
         // api.get(`/signUp/checkId2/${userId}`)
@@ -14,14 +16,26 @@ function LoginHistory(props) {
             .then(res => {
                 setTableInfo(res.data.results);
                 console.log(res.data.results);
+                setLoading(false);
             }).catch(e => {
                 console.log(e);
+                setTableInfo([]);
+                setLoading(false);
+                setError('데이터를 가져오는 데 문제가 발생했습니다.');
             });
     };
 
     useEffect(() => {
         getLoginInfo();
     }, [userId]);
+
+    if (loading) {
+        return <div>로딩 중...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <CTable>
