@@ -9,7 +9,7 @@ function LoginHistory(props) {
     const [tableInfo, setTableInfo] = useState([]); 
 
     const getLoginInfo = () => {
-        api.get(`/signUp/checkId2/${userId}`)
+        api.get(`/adminpages/${userId}`)
             .then(res => {
                 setTableInfo(res.data.results);
                 console.log(res.data.results);
