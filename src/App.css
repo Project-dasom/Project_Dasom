@@ -319,9 +319,9 @@ u:not(.underline) {
   /* display: inline-block;
   vertical-align: middle;
   text-align: center; */
-  width: 100%;
+  width: 120%;
   margin-top: 2%;
-  height: 300%;
+  height: 100%;
 }
 
 .mypage-form {

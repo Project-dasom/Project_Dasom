@@ -25,6 +25,7 @@ function UserPageInfo(props) {
 
     useEffect(() => {
         if (isLoggedIn) {
+            // api.get(`/signUp/checkId/${userId}`)
             api.get(`/admin_page/${userId}`)
                 .then(res => {
                     if(res.data.success) {
@@ -98,19 +99,19 @@ function UserPageInfo(props) {
             <div className="my-page-info" style={{ height: '70vh' }}>
                 <p className="sub-title" style={{textAlign: 'left'}}>회원 정보</p>
                 { (visible === false && isLoggedIn && userId === 'admin') &&
-                    <CTable>
+                    <CTable style={{ width: '100%' }}>
                         <CTableHead>
                             <CTableRow color="light">
-                                <CTableHeaderCell scope="col" onClick={() => sortData('id')}>구분</CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer' }} onClick={() => sortData('userName')}>이름<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer' }} onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer' }} onClick={() => sortData('created_at')}>가입일자<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer' }} onClick={() => sortData('userPhone')}>전화번호<FaSort/></CTableHeaderCell>
-                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer' }} onClick={() => sortData('history')}>마지막 로그인 시각<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ width: '8%' }} onClick={() => sortData('id')}>구분</CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '12%' }} onClick={() => sortData('userName')}>이름<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '10%' }} onClick={() => sortData('userId')}>ID<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '18%' }} onClick={() => sortData('created_at')}>가입일자<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '25%' }} onClick={() => sortData('userPhone')}>전화번호<FaSort/></CTableHeaderCell>
+                                <CTableHeaderCell scope="col" style={{ cursor: 'pointer', width: '35%' }} onClick={() => sortData('history')}>마지막 로그인 시각<FaSort/></CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
 
-                        <CTableBody>
+                        <CTableBody style={{ maxHeight: '60vh', overflowY: 'auto' }}>
                             {(Array.isArray(tableInfo) && tableInfo.length === 0) 
                             ? <CTableRow>
                                 <CTableDataCell colSpan="6">회원 정보가 없습니다</CTableDataCell>
@@ -127,8 +128,17 @@ function UserPageInfo(props) {
                                         </a>
                                     </CTableDataCell>
                                     <CTableDataCell>{new Date(info.created_at).toLocaleDateString('sv-SE')}</CTableDataCell>
-                                    <CTableDataCell>{info.userPhone}</CTableDataCell>
-                                    <CTableDataCell>{new Date(info.history).toLocaleDateString('sv-SE') + ' ' + new Date(info.history).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(/AM/, '오전').replace(/PM/, '오후')}</CTableDataCell>
+                                    <CTableDataCell>
+                                        {info.userPhone ? info.userPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : '-'}
+                                    </CTableDataCell>
+                                    <CTableDataCell>{
+                                        info.history ? 
+                                        new Date(info.history).toLocaleDateString('sv-SE') + ' ' + 
+                                        new Date(info.history).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+                                            .replace(/AM/, '오전').replace(/PM/, '오후') : 
+                                        '-'
+                                    }
+                                    </CTableDataCell>
                                 </CTableRow>
                             ))}
                         </CTableBody>
