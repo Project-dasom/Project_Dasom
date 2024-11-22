@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { CButton, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCard, CCardHeader, CNav, CNavItem, CNavLink, CCardBody, CCardText } from '@coreui/react';
 import LoginHistory from './LoginHistory';
 import ReservationInfo from './ReservationInfo';
-import DeleteAccount from './DeleteAccount';
+import DeleteAccount from './DeleteAccount2';
 import { FaSort } from "react-icons/fa6";
 import { FaTimes } from 'react-icons/fa';
 
@@ -47,7 +47,7 @@ function UserPageInfo(props) {
                     setLoading(false);
                 });
         }
-    }, [isLoggedIn, userId]);
+    }, [isLoggedIn, userId, visible]);
 
     // 데이터 정렬 함수
     const sortData = (key) => {
@@ -189,13 +189,18 @@ function UserPageInfo(props) {
                                     예약 정보
                                 </CNavLink>
                             </CNavItem>
-                            <CNavItem className="p-button">
-                                <CNavLink style={{
-                                        color: activeTab === 3 ? 'black' : 'white'  // 로그인 기록 탭만 흰색 글씨로 적용
-                                    }} href="#" active={activeTab === 3} onClick={() => handleTabClick(3)}>
-                                    회원 관리
-                                </CNavLink>
-                            </CNavItem>
+                            {
+                                userInfo.userId !== 'admin' &&
+                                (
+                                    <CNavItem className="p-button">
+                                        <CNavLink style={{
+                                                color: activeTab === 3 ? 'black' : 'white'  // 로그인 기록 탭만 흰색 글씨로 적용
+                                            }} href="#" active={activeTab === 3} onClick={() => handleTabClick(3)}>
+                                            회원 관리
+                                        </CNavLink>
+                                    </CNavItem>
+                                )
+                            }                            
                             </CNav>
 
                             <CButton 
@@ -222,8 +227,11 @@ function UserPageInfo(props) {
                             {activeTab === 2 && (
                                 <ReservationInfo userId={userInfo.userId}/>
                             )}
-                            {activeTab === 3 && (
-                                <DeleteAccount userId={userInfo.userId}/>
+                            {activeTab === 3 && userInfo.userId !== 'admin' && (
+                                <DeleteAccount userId={userInfo.userId} setVisible={setVisible}/>
+                            )}
+                            {activeTab === 3 && userInfo.userId === 'admin' && (
+                                <div></div>
                             )}
                         </CCardBody>
                     </CCard>                 
