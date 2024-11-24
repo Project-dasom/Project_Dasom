@@ -122,7 +122,7 @@ function LoginHistory(props) {
                 }
                 title={
                     <div style={{ textAlign: 'left' }}>
-                        {`최신 로그인 기록: ${recentLoginDetail}`}                 
+                        {`최근 로그인 기록: ${recentLoginDetail}`}                 
                     </div>}
                 chart={
                     <CChartLine
