@@ -1,0 +1,34 @@
+name: Deploy Lambda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    - name: Install dependencies (Node.js project)
+      run: |
+        if [ -f "package.json" ]; then npm install; fi
+
+    - name: Package Lambda
+      run: zip -r function.zip . -x '*.git*' '*.github/*'
+
+    - name: Deploy Lambda
+      run: |
+        aws lambda update-function-code \
+          --function-name MyLambdaFunction \ //**업데이트하실 람다 함수 이름으로 수정하셔야 합니다.**
+          --zip-file fileb://function.zip
