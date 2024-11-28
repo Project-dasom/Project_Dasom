@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { CButton, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCard, CCardHeader, CNav, CNavItem, CNavLink, CCardBody, CCardText } from '@coreui/react';
 import LoginHistory from './LoginHistory';
 import ReservationInfo from './ReservationInfo';
-import DeleteAccount from './DeleteAccount2';
+import DeleteAccount from './DeleteAccount';
 import { FaSort } from "react-icons/fa6";
 import { FaTimes } from 'react-icons/fa';
 
