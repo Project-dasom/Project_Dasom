@@ -3,7 +3,7 @@ name: Deploy Lambda
 on:
   push:
     branches:
-      - lamba-functions
+      - lambda-functions
 
 jobs:
   deploy:
