@@ -1,48 +1,57 @@
-name: Deploy All Lambdas
+name: React build
 
-on:
-  push:
+on: 
+  push: 
     branches:
-      - lambda-functions  # 트리거 브랜치를 lambda-functions로 변경
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Node.js 버전 명시
 
-    - name: Install dependencies (Node.js project)
-      run: |
-        if [ -f "package.json" ]; then npm install; fi
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      - name: Install Dependencies
+        run: |
+          npm config set legacy-peer-deps true
+          npm install
+      - name: Build
+        run: |
+          CI=false npm run build  # Linux 환경에서 CI 설정
+      - name: List build directory
+        run: ls -la build
 
-    - name: Deploy All Lambda Functions
-      run: |
-        echo "Fetching all Lambda functions..."
-        LAMBDAS=$(aws lambda list-functions --query 'Functions[].FunctionName' --output text)
-
-        for FUNCTION in $LAMBDAS; do
-          echo "Deploying $FUNCTION"
-
-          # 배포를 위한 압축 파일 생성
-          zip -r "${FUNCTION}.zip" . -x '*.git*' '*.github/*'
-
-          # AWS Lambda 코드 업데이트
-          aws lambda update-function-code \
-            --function-name "$FUNCTION" \
-            --zip-file "fileb://${FUNCTION}.zip"
-
-          echo "Deployed $FUNCTION"
-          rm -f "${FUNCTION}.zip"
-        done
-
-    - name: Cleanup
-      run: rm -f *.zip
+      - name: Check AWS Credentials
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "Error: AWS_ACCESS_KEY_ID is not set. Please set it in your GitHub Secrets."
+            exit 1
+          else
+            echo "AWS_ACCESS_KEY_ID is set."
+          fi
+      - name: Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --recursive --region ap-northeast-2 build s3://dasom-project-s3
+          if [ $? -eq 0 ]; then
+            echo "Deployment to S3 was successful."
+          else
+            echo "Deployment to S3 failed."
+            exit 1
+          fi
