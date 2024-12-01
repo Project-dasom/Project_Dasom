@@ -1,9 +1,9 @@
-name: Deploy Lambda
+name: Deploy All Lambdas
 
 on:
   push:
     branches:
-      - lambda-functions
+      - lambda-functions  # 트리거 브랜치를 lambda-functions로 변경
 
 jobs:
   deploy:
@@ -24,11 +24,25 @@ jobs:
       run: |
         if [ -f "package.json" ]; then npm install; fi
 
-    - name: Package Lambda
-      run: zip -r function.zip . -x '*.git*' '*.github/*'
-
-    - name: Deploy Lambda
+    - name: Deploy All Lambda Functions
       run: |
-        aws lambda update-function-code \
-          --function-name MyLambdaFunction \ //**업데이트하실 람다 함수 이름으로 수정하셔야 합니다.**
-          --zip-file fileb://function.zip
+        echo "Fetching all Lambda functions..."
+        LAMBDAS=$(aws lambda list-functions --query 'Functions[].FunctionName' --output text)
+
+        for FUNCTION in $LAMBDAS; do
+          echo "Deploying $FUNCTION"
+
+          # 배포를 위한 압축 파일 생성
+          zip -r "${FUNCTION}.zip" . -x '*.git*' '*.github/*'
+
+          # AWS Lambda 코드 업데이트
+          aws lambda update-function-code \
+            --function-name "$FUNCTION" \
+            --zip-file "fileb://${FUNCTION}.zip"
+
+          echo "Deployed $FUNCTION"
+          rm -f "${FUNCTION}.zip"
+        done
+
+    - name: Cleanup
+      run: rm -f *.zip
