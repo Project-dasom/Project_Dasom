@@ -1,9 +1,10 @@
-name: Deploy All Lambda Functions by Folder
+name: Deploy All Lambdas by Folder
 
 on:
   push:
     branches:
-      - lambda-functions  # lambda-functions 브랜치에서만 트리거
+      - lambda-functions  # lambda-functions 브랜치에서만 자동 실행
+  workflow_dispatch:  # 수동 실행 허용
 
 jobs:
   deploy:
@@ -24,7 +25,6 @@ jobs:
       run: |
         echo "Deploying Lambda functions by folder..."
 
-        # 각 폴더 이름과 Lambda 함수 이름 매핑
         declare -A FUNCTION_MAP=(
           ["FindPassword"]="FindPassword"
           ["LoginHistory_admin"]="LoginHistory_admin"
@@ -49,21 +49,18 @@ jobs:
           ["admin_page"]="admin_page"
         )
 
-        # 각 폴더에 대해 순회하며 배포
         for FOLDER in "${!FUNCTION_MAP[@]}"; do
           FUNCTION_NAME="${FUNCTION_MAP[$FOLDER]}"
           echo "Deploying $FUNCTION_NAME from folder $FOLDER"
 
-          # 폴더 내 코드 압축
           cd "$FOLDER"
           zip -r "../${FUNCTION_NAME}.zip" . -x '*.git*' '*.github/*'
           cd ..
 
-          # AWS Lambda 코드 업데이트
           aws lambda update-function-code \
             --function-name "$FUNCTION_NAME" \
             --zip-file "fileb://${FUNCTION_NAME}.zip"
 
           echo "Deployed $FUNCTION_NAME"
-          rm -f "${FUNCTION_NAME}.zip"  # 압축 파일 삭제
+          rm -f "${FUNCTION_NAME}.zip"
         done
