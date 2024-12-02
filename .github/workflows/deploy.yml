@@ -1,9 +1,9 @@
-name: Deploy All Lambdas
+name: Deploy All Lambda Functions by Folder
 
 on:
   push:
     branches:
-      - lambda-functions  # 트리거 브랜치를 lambda-functions로 변경
+      - lambda-functions  # lambda-functions 브랜치에서만 트리거
 
 jobs:
   deploy:
@@ -20,29 +20,50 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
 
-    - name: Install dependencies (Node.js project)
+    - name: Deploy Lambda Functions
       run: |
-        if [ -f "package.json" ]; then npm install; fi
+        echo "Deploying Lambda functions by folder..."
 
-    - name: Deploy All Lambda Functions
-      run: |
-        echo "Fetching all Lambda functions..."
-        LAMBDAS=$(aws lambda list-functions --query 'Functions[].FunctionName' --output text)
+        # 각 폴더 이름과 Lambda 함수 이름 매핑
+        declare -A FUNCTION_MAP=(
+          ["FindPassword"]="FindPassword"
+          ["LoginHistory_admin"]="LoginHistory_admin"
+          ["FindUserId"]="FindUserId"
+          ["NaverLogin"]="NaverLogin"
+          ["RegisterRequest"]="RegisterRequest"
+          ["CheckUserIdDuplicate"]="CheckUserIdDuplicate"
+          ["DeleteReservation"]="DeleteReservation"
+          ["NaverLoginCallback"]="NaverLoginCallback"
+          ["ReturnUserInfo"]="ReturnUserInfo"
+          ["ChangePassword"]="ChangePassword"
+          ["FindPassword-ORM"]="FindPassword-ORM"
+          ["reservation_latest"]="reservation_latest"
+          ["Login"]="Login"
+          ["reservationinfo"]="reservationinfo"
+          ["mypage_checkpw"]="mypage_checkpw"
+          ["mypage_change_pw"]="mypage_change_pw"
+          ["mypage_Delete_Account"]="mypage_Delete_Account"
+          ["LoginRequest"]="LoginRequest"
+          ["FindPassword-query"]="FindPassword-query"
+          ["sendSMS"]="sendSMS"
+          ["admin_page"]="admin_page"
+        )
 
-        for FUNCTION in $LAMBDAS; do
-          echo "Deploying $FUNCTION"
+        # 각 폴더에 대해 순회하며 배포
+        for FOLDER in "${!FUNCTION_MAP[@]}"; do
+          FUNCTION_NAME="${FUNCTION_MAP[$FOLDER]}"
+          echo "Deploying $FUNCTION_NAME from folder $FOLDER"
 
-          # 배포를 위한 압축 파일 생성
-          zip -r "${FUNCTION}.zip" . -x '*.git*' '*.github/*'
+          # 폴더 내 코드 압축
+          cd "$FOLDER"
+          zip -r "../${FUNCTION_NAME}.zip" . -x '*.git*' '*.github/*'
+          cd ..
 
           # AWS Lambda 코드 업데이트
           aws lambda update-function-code \
-            --function-name "$FUNCTION" \
-            --zip-file "fileb://${FUNCTION}.zip"
+            --function-name "$FUNCTION_NAME" \
+            --zip-file "fileb://${FUNCTION_NAME}.zip"
 
-          echo "Deployed $FUNCTION"
-          rm -f "${FUNCTION}.zip"
+          echo "Deployed $FUNCTION_NAME"
+          rm -f "${FUNCTION_NAME}.zip"  # 압축 파일 삭제
         done
-
-    - name: Cleanup
-      run: rm -f *.zip
