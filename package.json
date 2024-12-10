@@ -1,6 +1,6 @@
 {
   "name": "dasom-study-cafe",
-  "version": "0.1.0",
+  "version": "3.0",
   "private": true,
   "dependencies": {
     "@coreui/bootstrap-react": "^1.0.0-beta.0",
@@ -50,6 +50,10 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/react-datepicker": "^7.0.0"
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.0.1",
+    "@types/react-datepicker": "^7.0.0",
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.7.2"
   }
 }

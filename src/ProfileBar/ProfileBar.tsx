@@ -1,6 +1,10 @@
 import { CPopover, CButton, CAvatar, } from '@coreui/react'
 
-function ProfileBarPage(props) {
+interface LogoutHandlerProps {
+    onLogout: () => void;
+}
+
+const ProfileBarPage: React.FC<LogoutHandlerProps> = (props) => {
     const getId = localStorage.getItem("id");
 
     return (
@@ -31,7 +35,7 @@ function ProfileBarPage(props) {
             >
                 
                 <CButton shape="rounded-pill">
-                    <CAvatar className="profile-badge" color="success" textColor="white">{localStorage.getItem("name")[0]}</CAvatar>
+                    <CAvatar className="profile-badge" color="success" textColor="white">{localStorage.getItem("name")?.[0] || ''}</CAvatar>
                 </CButton>
             </CPopover>
         </main>

@@ -9,11 +9,15 @@ import LoginPage from "../Login/LoginPage";
 import SignUpPage from "../SignUp/SignUpPage";
 import ForgotUserPage from "../ForgotUser/ForgotUserPage";
 
-const SideBarPage = (props) => {
-  const [visible, setVisible] = useState(false);
-  const [ renderPage, setRenderPage ] = useState("login");
+interface LoginHandlerProps {
+  onLogin: () => void;
+}
 
-  function onChangePage(mode) {
+const SideBarPage: React.FC<LoginHandlerProps> = (props) => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [ renderPage, setRenderPage ] = useState<string>("login");
+
+  function onChangePage(mode: string) {
     setRenderPage(mode);
   }
 
@@ -23,7 +27,7 @@ const SideBarPage = (props) => {
 
   return (
     <>
-      <Button onClick={() => setVisible(true)} variant="outline-dark m-2 p-0 px-2" size="" className="b-button" style={{ borderRadius: '8px', borderWidth: '2px' }}>로그인</Button>
+      <Button onClick={() => setVisible(true)} variant="outline-dark m-2 p-0 px-2" className="b-button" style={{ borderRadius: '8px', borderWidth: '2px' }}>로그인</Button>
       <COffcanvas className="side-bar" placement="end" scroll={true} visible={visible} onHide={() => setVisible(false)}>
         <COffcanvasBody>
           {renderPage === "login" ? <LoginPage onChangePage={onChangePage} onLogin={onLogin}/> 

@@ -24,9 +24,9 @@ import MyPage from "./MyPage/MyPage";
 import AdminPage from './AdminPage/AdminPage';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const getId = localStorage.getItem("id");
-  const [shouldDisplayFooter, setShouldDisplayFooter] = useState(true);
+  const [shouldDisplayFooter, setShouldDisplayFooter] = useState<boolean>(true);
 
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
@@ -36,7 +36,7 @@ function App() {
   }, []);
 
   //로그인 핸들러
-  const loginHandler = (id, password) => {    
+  const loginHandler = (): void => {    
     localStorage.setItem("isLoggedIn", "1");
     // 로그인 되었을 때 State를 true로 업데이트
     setIsLoggedIn(true);
